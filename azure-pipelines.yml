@@ -53,6 +53,8 @@ steps:
     testResultsFiles: '**/*.trx'
     failTaskOnFailedTests: true
   condition: succeededOrFailed()
+- pwsh: |
+    .\createmsi.ps1
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.Repository.LocalPath)\artifacts'
