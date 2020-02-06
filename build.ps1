@@ -36,3 +36,5 @@ else {
 }
 
 Get-Location
+
+Invoke-Expression -Command "heat"
