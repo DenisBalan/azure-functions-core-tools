@@ -1,1 +1,1 @@
-Write-Host "'$(Build.Repository.LocalPath)'"
+# Write-Host "'$(Build.Repository.LocalPath)'"
