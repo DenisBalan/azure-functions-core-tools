@@ -39,30 +39,29 @@ steps:
       # acquire access token from Azure CLI and export it to AZURE_MANAGEMENT_ACCESS_TOKEN
       $accessToken = (az account get-access-token --query "accessToken" | % { $_.Trim('"') })
       echo "##vso[task.setvariable variable=azure_management_access_token]$accessToken"
-- pwsh: |
-    .\build.ps1
+- pwsh: | 
+     @("heat", "candle", "light") | %{Get-Command $_ -ErrorAction Continue }
+#    .\build.ps1
   env:
     AzureBlobSigningConnectionString: $(AzureBlobSigningConnectionString)
     BuildArtifactsStorage: $(BuildArtifactsStorage)
     DURABLE_STORAGE_CONNECTION: $(DURABLE_STORAGE_CONNECTION)
     TELEMETRY_INSTRUMENTATION_KEY: $(TELEMETRY_INSTRUMENTATION_KEY)
   displayName: 'Executing build script'
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'VSTest'
-    testResultsFiles: '**/*.trx'
-    failTaskOnFailedTests: true
-  condition: succeededOrFailed()
-- pwsh: |
-    .\createmsi.ps1
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: '$(Build.Repository.LocalPath)\artifacts'
-    Contents: 'Azure.Functions.Cli.*'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    CleanTargetFolder: true
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+# - task: PublishTestResults@2
+#  inputs:
+#    testResultsFormat: 'VSTest'
+#    testResultsFiles: '**/*.trx'
+#    failTaskOnFailedTests: true
+#  condition: succeededOrFailed()
+# - task: CopyFiles@2
+#  inputs:
+#    SourceFolder: '$(Build.Repository.LocalPath)\artifacts'
+#    Contents: 'Azure.Functions.Cli.*'
+#    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+#    CleanTargetFolder: true
+# - task: PublishBuildArtifacts@1
+#  inputs:
+#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#    ArtifactName: 'drop'
+#    publishLocation: 'Container'
