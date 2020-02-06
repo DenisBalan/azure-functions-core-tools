@@ -9,4 +9,6 @@ if (-not (@($env:Path -split ";") -contains $env:WIX))
     {
         $env:Path += ";$env:WIX"
     }
-}  
+}
+
+@("heat", "candle", "light") | %{Get-Command $_ -ErrorAction Continue } 
