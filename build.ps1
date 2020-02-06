@@ -37,4 +37,6 @@ else {
 
 Get-Location
 
-Invoke-Expression -Command "heat"
+Get-Command heat.exe
+Get-Command candle.exe
+Get-Command light.exe
