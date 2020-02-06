@@ -21,26 +21,29 @@ variables:
   APPVEYOR_REPO_COMMIT: $(Build.SourceVersion)
 
 steps:
-- pwsh: |
-    Write-Host "Target branch: '$(APPVEYOR_REPO_BRANCH)'"
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-- task: NuGetToolInstaller@1
-  inputs:
-    versionSpec:
-- task: AzureCLI@2
-  displayName: Login via Azure CLI to acquire access token
-  inputs:
-    azureSubscription: $(E2ETestServiceConnectionName)
-    scriptType: ps
-    scriptLocation: inlineScript
-    inlineScript: |
+# - pwsh: |
+#    Write-Host "Target branch: '$(APPVEYOR_REPO_BRANCH)'"
+# - task: NodeTool@0
+#  inputs:
+#    versionSpec: '10.x'
+# - task: NuGetToolInstaller@1
+#  inputs:
+#    versionSpec:
+# - task: AzureCLI@2
+#  displayName: Login via Azure CLI to acquire access token
+#  inputs:
+#    azureSubscription: $(E2ETestServiceConnectionName)
+#    scriptType: ps
+#    scriptLocation: inlineScript
+#    inlineScript: |
       # acquire access token from Azure CLI and export it to AZURE_MANAGEMENT_ACCESS_TOKEN
-      $accessToken = (az account get-access-token --query "accessToken" | % { $_.Trim('"') })
-      echo "##vso[task.setvariable variable=azure_management_access_token]$accessToken"
+#      $accessToken = (az account get-access-token --query "accessToken" | % { $_.Trim('"') })
+#      echo "##vso[task.setvariable variable=azure_management_access_token]$accessToken"
+- pwsh: |
+     dir env:
+  displayName: 'Dumping envars'
 - pwsh: | 
-     @("heat", "candle", "light") | %{Get-Command $_ -ErrorAction Continue }
+     @("heat", "candle", "light") | %{Get-Command $_ -ErrorAction Continue } 
 #    .\build.ps1
   env:
     AzureBlobSigningConnectionString: $(AzureBlobSigningConnectionString)
