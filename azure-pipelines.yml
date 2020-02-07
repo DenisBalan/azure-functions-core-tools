@@ -24,10 +24,10 @@ steps:
 - pwsh: |
     Write-Host "Target branch: '$(APPVEYOR_REPO_BRANCH)'"
 - task: NodeTool@0
-   inputs:
+  inputs:
     versionSpec: '10.x'
 - task: NuGetToolInstaller@1
-   inputs:
+  inputs:
     versionSpec:
 - task: AzureCLI@2
   displayName: Login via Azure CLI to acquire access token
