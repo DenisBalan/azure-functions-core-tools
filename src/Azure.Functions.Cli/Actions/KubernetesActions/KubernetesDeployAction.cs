@@ -110,7 +110,7 @@ namespace Azure.Functions.Cli.Actions.KubernetesActions
                 triggers = await DockerHelpers.GetTriggersFromDockerImage(resolvedImageName);
             }
 
-            (var resources, var unchangedFuncKeys, var newFuncKeys) = await KubernetesHelper.GetFunctionsDeploymentResources(
+            (var resources, var funcKeys) = await KubernetesHelper.GetFunctionsDeploymentResources(
                 Name,
                 resolvedImageName,
                 Namespace,
@@ -150,7 +150,7 @@ namespace Azure.Functions.Cli.Actions.KubernetesActions
                 }
 
                 //Print the function keys message to the console
-                FuncAppKeysHelper.FunKeysMessage(unchangedFuncKeys, newFuncKeys);
+                FuncAppKeysHelper.FunKeysMessage(funcKeys);
             }
         }
 
