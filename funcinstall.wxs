@@ -82,5 +82,7 @@
     <Property Id='ARPPRODUCTICON' Value='icon.ico' />
 
     <WixVariable Id='WixUILicenseRtf' Value='license.rtf' />
+    <WixVariable Id='WixUIBannerBmp' Value='installbanner.bmp' />
+    <WixVariable Id='WixUIDialogBmp' Value='installdialog.bmp' />
   </Product>
 </Wix>

@@ -60,6 +60,8 @@ $cliVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($cli).FileVer
 
     Copy-Item "$basedir\icon.ico" -Destination $artifactsPath\win-$platform
     Copy-Item "$basedir\license.rtf" -Destination $artifactsPath\win-$platform
+    Copy-Item "$basedir\installbanner.bmp" -Destination $artifactsPath\win-$platform
+    Copy-Item "$basedir\installdialog.bmp" -Destination $artifactsPath\win-$platform
     Set-Location "$artifactsPath\win-$platform"
     
     $masterWxsName = "funcinstall"
