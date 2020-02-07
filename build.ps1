@@ -52,11 +52,17 @@ else {
 # Get runtime version
 $cli = Get-ChildItem -Path "$baseDir\artifacts" -Include func.dll -Recurse | Select-Object -First 1
 $cliVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($cli).FileVersion
-Write-Host "Cli version:$cliVersion"
 
 # Generate win-x64 MSI
-# Set-Location $(System.ArtifactsDirectory)\win-x64
+# Copy icon and license
+Copy-Item "icon.ico" -Destination $baseDir\artifacts\win-x64
+Copy-Item "license.rtf" -Destination $baseDir\artifacts\win-x64
+Set-Location $baseDir\artifacts\win-x64
 
-# Invoke-Expression "heat dir '.'' -cg FuncHost -dr INSTALLDIR -gg -ke -out $baseDir\x64-frag.wxs -sreg -template fragment -var var.Source"
-# Invoke-Expression "candle -arch x64 -dPlatform='x64' -dSource='.' -dProductVersion='$cliVersion' funcinstall.wxs x64-frag.wxs"
-# Invoke-Expression "light -ext WixUIExtension -out $(System.ArtifactsDirectory)\funcinstall-x64.msi -sice:ICE61 funcinstall.wixobj x64-frag.wixobj" 
+$masterPath = "$baseDir\funcinstall.wxs"
+$fragmentPath = "$baseDir\x64-frag.wxs"
+$msiPath = "$baseDir\artifacts\funcinstall-x64.msi"
+
+Invoke-Expression "heat dir '.' -cg FuncHost -dr INSTALLDIR -gg -ke -out $fragmentPath -sreg -template fragment -var var.Source"
+Invoke-Expression "candle -arch x64 -dPlatform='x64' -dSource='.' -dProductVersion='$cliVersion' $masterPath $fragmentPath"
+Invoke-Expression "light -ext WixUIExtension -out $msiPath -sice:ICE61 funcinstall.wixobj x64-frag.wixobj" 
