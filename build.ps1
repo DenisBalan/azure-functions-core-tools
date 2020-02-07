@@ -1,4 +1,4 @@
-# $baseDir = Get-Location
+$baseDir = Get-Location
 
 if (-not (@($env:Path -split ";") -contains $env:WIX))
 {
@@ -50,7 +50,7 @@ else {
 }
 
 # Get runtime version
-$cli = Get-ChildItem -Path $(System.ArtifactsDirectory) -Include func.dll -Recurse | Select-Object -First 1
+$cli = Get-ChildItem -Path "$baseDir\artifacts" -Include func.dll -Recurse | Select-Object -First 1
 $cliVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($cli).FileVersion
 Write-Host "Cli version:$cliVersion"
 
