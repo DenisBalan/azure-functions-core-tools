@@ -55,8 +55,8 @@ $cliVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($cli).FileVer
 
 # Generate win-x64 MSI
 # Copy icon and license
-Copy-Item "icon.ico" -Destination $baseDir\artifacts\win-x64
-Copy-Item "license.rtf" -Destination $baseDir\artifacts\win-x64
+Copy-Item "$basedir\icon.ico" -Destination $baseDir\artifacts\win-x64
+Copy-Item "$basedir\license.rtf" -Destination $baseDir\artifacts\win-x64
 Set-Location $baseDir\artifacts\win-x64
 
 $masterPath = "$baseDir\funcinstall.wxs"
