@@ -404,6 +404,7 @@ namespace Build
             foreach (var runtime in Settings.TargetRuntimes)
             {
                 var path = Path.Combine(Settings.OutputDir, runtime);
+                ColoredConsole.WriteLine($"Creating zip from {path}");
 
                 var zipPath = Path.Combine(Settings.OutputDir, $"Azure.Functions.Cli.{runtime}.{version}.zip");
                 ColoredConsole.WriteLine($"Creating {zipPath}");
@@ -413,14 +414,14 @@ namespace Build
                 ColoredConsole.WriteLine($"Creating {shaPath}");
                 File.WriteAllText(shaPath, ComputeSha256(zipPath));
 
-                //try
-                //{
-                //    Directory.Delete(path, recursive: true);
-                //}
-                //catch
-                //{
-                //    ColoredConsole.Error.WriteLine($"Error deleting {path}");
-                //}
+                try
+                {
+                    Directory.Delete(path, recursive: true);
+                }
+                catch
+                {
+                    ColoredConsole.Error.WriteLine($"Error deleting {path}");
+                }
 
                 ColoredConsole.WriteLine();
             }
