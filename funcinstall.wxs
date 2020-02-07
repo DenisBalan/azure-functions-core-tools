@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='windows-1252'?>
 <?define Manufacturer='Microsoft'?>
 <?define ProductName='Azure Functions Core Tools'?>
-<?define ProductVersion='$(var.devops_buildNumber)'?>
 
 <?if $(var.Platform)=x64?>
   <?define ProductGuid='8F2F356C-F1F9-4F18-B3A5-4D9F0EE492C5'?>
