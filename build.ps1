@@ -1,3 +1,17 @@
+# $baseDir = Get-Location
+
+if (-not (@($env:Path -split ";") -contains $env:WIX))
+{
+    # Check if the Wix path points to the bin folder
+    if ((Split-Path $env:WIX -Leaf) -ne "bin")
+    {
+        $env:Path += ";$env:WIX\bin"
+    }
+    else
+    {
+        $env:Path += ";$env:WIX"
+    }
+}
 
 if ($env:APPVEYOR_REPO_BRANCH -eq "disabled") {
     Set-Location ".\src\Azure.Functions.Cli"
@@ -34,3 +48,15 @@ else {
     Invoke-Expression -Command  "dotnet run"
     if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode)  }
 }
+
+# Get runtime version
+$cli = Get-ChildItem -Path $(System.ArtifactsDirectory) -Include func.dll -Recurse | Select-Object -First 1
+$cliVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($cli).FileVersion
+Write-Host "Cli version:$cliVersion"
+
+# Generate win-x64 MSI
+# Set-Location $(System.ArtifactsDirectory)\win-x64
+
+# Invoke-Expression "heat dir '.'' -cg FuncHost -dr INSTALLDIR -gg -ke -out $baseDir\x64-frag.wxs -sreg -template fragment -var var.Source"
+# Invoke-Expression "candle -arch x64 -dPlatform='x64' -dSource='.' -dProductVersion='$cliVersion' funcinstall.wxs x64-frag.wxs"
+# Invoke-Expression "light -ext WixUIExtension -out $(System.ArtifactsDirectory)\funcinstall-x64.msi -sice:ICE61 funcinstall.wixobj x64-frag.wixobj" 
