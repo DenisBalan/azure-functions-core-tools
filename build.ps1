@@ -34,9 +34,3 @@ else {
     Invoke-Expression -Command  "dotnet run"
     if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode)  }
 }
-
-Get-Location
-
-Get-Command heat.exe
-Get-Command candle.exe
-Get-Command light.exe
