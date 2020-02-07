@@ -54,11 +54,10 @@ $artifactsPath = "$baseDir\artifacts"
 $cli = Get-ChildItem -Path $artifactsPath -Include func.dll -Recurse | Select-Object -First 1
 $cliVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($cli).FileVersion
 
+# Generate MSI installers for Windows
 @('x64', 'x86') | ForEach-Object { 
     $platform = $_
 
-    # Generate win-x64 MSI
-    # Copy icon and license
     Copy-Item "$basedir\icon.ico" -Destination $artifactsPath\win-$platform
     Copy-Item "$basedir\license.rtf" -Destination $artifactsPath\win-$platform
     Set-Location "$artifactsPath\win-$platform"
@@ -71,7 +70,7 @@ $cliVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($cli).FileVer
     $fragmentPath = "$baseDir\$fragmentName.wxs"
     $msiPath = "$artifactsPath\$msiName-$platform.msi"
     
-    Invoke-Expression "heat dir '.' -cg FuncHost -dr INSTALLDIR -gg -ke -out $fragmentPath -sreg -template fragment -var var.Source"
+    Invoke-Expression "heat dir '.' -cg FuncHost -dr INSTALLDIR -gg -ke -out $fragmentPath -srd -sreg -template fragment -var var.Source"
     Invoke-Expression "candle -arch $platform -dPlatform='$platform' -dSource='.' -dProductVersion='$cliVersion' $masterWxsPath $fragmentPath"
     Invoke-Expression "light -ext WixUIExtension -out $msiPath -sice:ICE61 $masterWxsName.wixobj $fragmentName.wixobj" 
 }
